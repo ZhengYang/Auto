@@ -17,10 +17,10 @@ My pipeline consisted of 6 steps. First, I converted the images to HSL color spa
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function in the following ways.
 First, the lines are categorized into two groups based on the signs of their gridient. 
 Lines having positive (*+*) gradient are put into a group from which we will compute the _average line_ to represent *right* lane.
-At the same time, lines having negative (*-*) gradient are put into a group from which we will compute the _average line_ to represent *left* lane.
+At the same time, lines having negative (*-*) gradient are put into another group from which we will compute the _average line_ to represent *left* lane.
 
 
-To compute the _average line_, I need 2 piece of information: the average gradient and the average interception to y axis. This is because a line can be uniquely identified by `y = kx + b` where `k` is the gradient and `b` is the y-intercept. These two quantities can be easily computed and the resulting line will be the _average line_.
+To compute the _average line_, I need 2 pieces of information: the average gradient and the average interception to y axis. This is because a line can be uniquely identified by `y = kx + b` where `k` is the gradient and `b` is the y-intercept. These two quantities can be easily computed and the resulting line will be the _average line_.
 
 
 ### 2. Identify potential shortcomings with your current pipeline
@@ -40,6 +40,6 @@ Another shortcoming could be when driving at night and the road is wet, the refl
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to select the lane region based on additional car orientation information as when the car is moving up a slope or moving down hill, the selected region needs to be adjusted as lane will appear in a different region of the image. 
+A possible improvement would be to select the lane region based on additional car orientation information as when the car is moving up a slope or moving down a hill, the selected region needs to be adjusted as lane will appear in a different part of the image. 
 
-Another potential improvement could be to fit the lane in a curve (or line segments) to give more information about where the load leading the car, then it can help with planning future steering actions, too. 
+Another potential improvement could be to fit the lane in a curve (or line segments) to give more information about where the load leading the car, it can help with planning future steering actions, too. 
