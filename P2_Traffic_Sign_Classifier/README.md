@@ -29,15 +29,10 @@ The goals / steps of this project are the following:
 [image14]: ./report_imgs/precision_recall.png "Precision and Recall"
 [image15]: ./report_imgs/layer_viz.png "Vizualize Layers"
 [image16]: ./my_images/original1.jpg "my images 1"
-[image17]: ./my_images/original2.png "my images 2"
-[image18]: ./my_images/original3.png "my images 3"
-[image19]: ./my_images/original4.png "my images 4"
-[image20]: ./my_images/original5.png "my images 5"
-
-## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
----
+[image17]: ./my_images/original2.jpg "my images 2"
+[image18]: ./my_images/original3.jpg "my images 3"
+[image19]: ./my_images/original4.jpg "my images 4"
+[image20]: ./my_images/original5.jpg "my images 5"
 
 
 ### Data Set Summary & Exploration
@@ -67,7 +62,7 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ### Design and Test a Model Architecture
 
-####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
+#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
 I didn't convert input data to grayscale because the color information is significant in differenciating the signs.
 
@@ -80,7 +75,7 @@ Data augmentation proves to be a powerful technique to improve model accuracy. N
 ![alt text][image6]
 
 
-####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
 My final model consisted of the following layers:
 
@@ -107,27 +102,27 @@ My final model consisted of the following layers:
  
 
 
-####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 To train the model, I used average cross entropy of softmax of logits as the loss function. To minimize it, Adam optimizer is used.
 Below is a list of parameters I used for training:
 
 * learning rate = 0.001
-* epochs = 5
+* epochs = 15
 * batch size = 64
 
 
-####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
-* training set accuracy of 
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of *99.9%*
+* validation set accuracy of *99.0%* 
+* test set accuracy of *98.1%*
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
 
-LeNet is used for the initial experiment which produce around 0.89 accuracy.
+LeNet is used for the initial experiment which produce around 89% accuracy.
 
 * What were some problems with the initial architecture?
 
@@ -144,7 +139,7 @@ convolution layer learns an optimal color transformation that frees me from hand
 * Which parameters were tuned? How were they adjusted and why?
 
 I have experimented with different learning rate, batch size and number of epochs. The batch size of 64 gives the best performance. The learning rate from 
-LeNet (0.001) and epochs (10) are performing well.
+LeNet (0.001) and epochs (15) are performing well.
 
 
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
@@ -181,9 +176,9 @@ Here are the results of the prediction:
 | General caution			| General caution      							|
 
 
-The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 98%.
+The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 98.1%.
 
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
@@ -206,6 +201,6 @@ Images below shows how confident the predictions are. As shown, the model is ver
 For the second image ... 
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+#### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
 ![alt text][image15]
