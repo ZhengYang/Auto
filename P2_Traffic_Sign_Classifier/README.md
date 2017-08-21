@@ -96,7 +96,9 @@ My final model consisted of the following layers:
 | Max pooling	      	| 3x3 stride,  outputs 1x1x128   				|
 | Flatten       		| Concatenate all three pooling layers above, outputs (14x14x32 + 5x5x64 + 1x1x128 = 8000) |
 | Fully connected		| width = 1024, dropout = 0.5        			|
+| RELU					|												|
 | Fully connected		| width = 1024, dropout = 0.5       			|
+| RELU					|												|
 | Fully connected		| width = 43       								|
 | Softmax				| 43 logits        								|
  
@@ -127,14 +129,14 @@ LeNet is used for the initial experiment which produce around 89% accuracy.
 * What were some problems with the initial architecture?
 
 The network is using grayscale which misses a lot of important information in the traffic sign appliation.
-Also the number of convlutions layer are not enough to generalize the patterns in this application although it's a good fit for MNIST dataset 
+Also the number of convolutional layer are not enough to generalize the patterns in this application although it's a good fit for MNIST dataset 
 considering the images pattern are not as complex as this one.
-Given these limitations, I'm able to achieve 0.93 accuracy with grayscale inputs.
+Given these limitations, I tuned the layer depth and I'm able to achieve 0.93 accuracy with grayscale inputs.
 
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
 
 To take color into account, we have to introduce a significant amount of parameters, so data augmentation needs to be done here. In particular, the first 
-convolution layer learns an optimal color transformation that frees me from hand picking RGB, HSL, HSV and so on. 
+convolutional layer learns an optimal color transformation that frees me from hand picking RGB, HSL, HSV and so on. 
 
 * Which parameters were tuned? How were they adjusted and why?
 
@@ -144,7 +146,7 @@ LeNet (0.001) and epochs (15) are performing well.
 
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
 
-One important lesson from this is that the fully connected layer can take the output of each pooling layer to gather both the high level and low level  features. This greatly improves the accuracy. Also, more convolution layers and deeper number of filters help improve the accuracy, too.
+One important lesson from this is that the fully connected layer can take the output of each pooling layer to gather both the high level and low level features. This greatly improves the accuracy. Also, more convolution layers and deeper number of filters help improve the accuracy, too.
 Dropout layer is also important to prevent the network from overfitting, and easier to implement than regularization.
 
 ### Test a Model on New Images
@@ -180,18 +182,49 @@ The model was able to correctly guess 5 of the 5 traffic signs, which gives an a
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
-
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+The code for making predictions on my final model is located in the 20th cell of the Ipython notebook.
 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| 9.99999881e-01         			|Speed limit (80km/h)  									| 
+| 1.10550246e-07     				| Speed limit (60km/h)										|
+| 5.49767509e-10					| Speed limit (30km/h)											|
+| 3.91929572e-10	      			|Speed limit (50km/h)						 				|
+| 5.24440213e-12				    | Speed limit (100km/h)	    							|
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.         			| Ahead only  									| 
+| 0.     				| Speed limit (20km/h)											|
+| 0.					| Speed limit (30km/h)										|
+| 0.	      			|Speed limit (50km/h)						 				|
+| 0.				    | Speed limit (60km/h)	  							|
+
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00000000e+00         			| Roudabout mandatory	  									| 
+| 5.08040164e-35     				| Keep right										|
+| 1.61228879e-35					| Turn left ahead									|
+| 1.80451131e-38	      			|Speed limit (120km/h)						 				|
+| 1.67055628e-38				    | End of no passing by vehicles over 3.5 metric tons	  							|
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.         			| Stop	  									| 
+| 0.     				| Speed limit (20km/h)											|
+| 0.					| Speed limit (30km/h)										|
+| 0.	      			|Speed limit (50km/h)						 				|
+| 0.				    | Speed limit (60km/h)	  							|
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.         			| General caution 									| 
+| 0.     				| Speed limit (20km/h)											|
+| 0.					| Speed limit (30km/h)										|
+| 0.	      			|Speed limit (50km/h)						 				|
+| 0.				    | Speed limit (60km/h)	  							|
 
 Images below shows how confident the predictions are. As shown, the model is very confident on the predictions.
 ![alt text][image9] ![alt text][image10] ![alt text][image11] 
