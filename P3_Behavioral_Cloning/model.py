@@ -17,14 +17,56 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
     '''
 
     from keras.models import Sequential
-    from keras.layers import Flatten, Dense, Lambda
+    from keras.layers import Activation, Cropping2D, Dense, Dropout, Flatten, Lambda
+    from keras.layers.convolutional import Convolution2D
+    from keras.layers.pooling import MaxPooling2D
 
     train_generator = generator(train_samples, batch_size=batch_size)
     valid_generator = generator(valid_samples, batch_size=batch_size)
 
+    # MODEL
     model = Sequential()
+
+    # Preprocessing Layer
     model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(160, 320, 3)))
+    model.add(Cropping2D(cropping=((50, 20), (0, 0))))
+
+    # Conv Layers
+    model.add(Convolution2D(24, 5, 5))
+    model.add(MaxPooling2D((2,2)))
+    #model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
+    model.add(Convolution2D(36, 5, 5))
+    model.add(MaxPooling2D((2,2)))
+    #model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
+    model.add(Convolution2D(48, 3, 3))
+    model.add(MaxPooling2D((2,2)))
+    #model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
+    model.add(Convolution2D(64, 3, 3))
+    model.add(MaxPooling2D((2,2)))
+    #model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
+    # FC Layers
     model.add(Flatten())
+
+    model.add(Dense(100))
+    model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
+    model.add(Dense(50))
+    model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
+    model.add(Dense(10))
+    model.add(Dropout(0.5))
+    model.add(Activation('relu'))
+
     model.add(Dense(1))
 
     model.compile(loss='mse', optimizer='adam')
