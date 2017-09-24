@@ -2,12 +2,16 @@ import argparse
 import os.path as path
 import glob
 
-
 import numpy as np
 import pandas as pd
 import cv2
+
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
+from keras.models import Sequential
+from keras.layers import Activation, Cropping2D, Dense, Dropout, Flatten, Lambda
+from keras.layers.convolutional import Convolution2D
+from keras.layers.pooling import MaxPooling2D
 
 
 def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_name='model.h5'):
@@ -15,11 +19,6 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
     Train models using the generators.
     Save the model to a file after the trainings.
     '''
-
-    from keras.models import Sequential
-    from keras.layers import Activation, Cropping2D, Dense, Dropout, Flatten, Lambda
-    from keras.layers.convolutional import Convolution2D
-    from keras.layers.pooling import MaxPooling2D
 
     train_generator = generator(train_samples, batch_size=batch_size)
     valid_generator = generator(valid_samples, batch_size=batch_size)
