@@ -1,13 +1,13 @@
+import argparse
 import os.path as path
+import glob
+
+
+import numpy as np
 import pandas as pd
 import cv2
-import numpy as np
-import argparse
-
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
-
-import numpy as np
 
 
 def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_name='model.h5'):
@@ -29,7 +29,7 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
 
     # Preprocessing Layer
     model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(160, 320, 3)))
-    model.add(Cropping2D(cropping=((50, 20), (0, 0))))
+    model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
     # Conv Layers
     model.add(Convolution2D(24, 5, 5))
@@ -107,28 +107,32 @@ def read_img(img_path):
 def extract_samples(data_folder):
     '''
     Extracts center, left, righ image path and steering angles from the label file.
-    Correct the absolute path when data is gathered into correct relative path.
+    Each sub-folder in data_folder will be merged into one big dataset.
+    Correct the absolute path when data was gathered into correct relative path.
     Return the repackaged clean data.
     '''
-    image_base = path.join(data_folder, 'IMG')
-    label_path = path.join(data_folder, 'driving_log.csv')
-
-    samples_df = pd.read_csv(label_path, names=['center_img', 'left_img', 'right_img', 'steer_angle', 'throttle', 'break', 'speed'])
+    subfolders = glob.glob(path.join(data_folder, '*'))
     samples = []
-    for _, row in samples_df.iterrows():
-        # original image path
-        center, left, right, angle = row['center_img'], row['left_img'], row['right_img'], row['steer_angle']
-        # extract image names
-        center, left, right = path.basename(center), path.basename(left), path.basename(right)
-        # prepend image path
-        center, left, right = path.join(image_base, center), path.join(image_base, left), path.join(image_base, right)
-        # repackage the cleaned data into samples
-        sample = {}
-        sample['center_img'] = center
-        sample['left_img'] = left
-        sample['right_img'] = right
-        sample['steer_angle'] = angle
-        samples.append(sample)
+
+    for subfolder in subfolders:
+        image_base = path.join(subfolder, 'IMG')
+        label_path = path.join(subfolder, 'driving_log.csv')
+
+        samples_df = pd.read_csv(label_path, names=['center_img', 'left_img', 'right_img', 'steer_angle', 'throttle', 'break', 'speed'])
+        for _, row in samples_df.iterrows():
+            # original image path
+            center, left, right, angle = row['center_img'], row['left_img'], row['right_img'], row['steer_angle']
+            # extract image names
+            center, left, right = path.basename(center), path.basename(left), path.basename(right)
+            # prepend image path
+            center, left, right = path.join(image_base, center), path.join(image_base, left), path.join(image_base, right)
+            # repackage the cleaned data into samples
+            sample = {}
+            sample['center_img'] = center
+            sample['left_img'] = left
+            sample['right_img'] = right
+            sample['steer_angle'] = angle
+            samples.append(sample)
     return samples
 
 
