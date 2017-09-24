@@ -33,22 +33,18 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
     # Conv Layers
     model.add(Convolution2D(24, 5, 5))
     model.add(MaxPooling2D((2,2)))
-    #model.add(Dropout(0.5))
     model.add(Activation('relu'))
 
     model.add(Convolution2D(36, 5, 5))
     model.add(MaxPooling2D((2,2)))
-    #model.add(Dropout(0.5))
     model.add(Activation('relu'))
 
     model.add(Convolution2D(48, 3, 3))
     model.add(MaxPooling2D((2,2)))
-    #model.add(Dropout(0.5))
     model.add(Activation('relu'))
 
     model.add(Convolution2D(64, 3, 3))
     model.add(MaxPooling2D((2,2)))
-    #model.add(Dropout(0.5))
     model.add(Activation('relu'))
 
     # FC Layers
