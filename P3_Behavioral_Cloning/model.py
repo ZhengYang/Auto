@@ -1,4 +1,5 @@
 import argparse
+import os
 import os.path as path
 import glob
 
@@ -94,8 +95,12 @@ def read_img(img_path):
     '''
     Read image in RGB format.
     '''
-    img = cv2.imread(img_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    try:
+        img = cv2.imread(img_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    except:
+        print('Error loading image:', img_path)
+        raise
     return img
 
 
@@ -107,28 +112,66 @@ def extract_samples(data_folder):
     Return the repackaged clean data.
     '''
     subfolders = glob.glob(path.join(data_folder, '*'))
+    
     samples = []
-
     for subfolder in subfolders:
         image_base = path.join(subfolder, 'IMG')
         label_path = path.join(subfolder, 'driving_log.csv')
 
         samples_df = pd.read_csv(label_path, names=['center_img', 'left_img', 'right_img', 'steer_angle', 'throttle', 'break', 'speed'])
+
         for _, row in samples_df.iterrows():
             # original image path
-            center, left, right, angle = row['center_img'], row['left_img'], row['right_img'], row['steer_angle']
+            orig_center = row['center_img']
+            orig_left   = row['left_img']
+            orig_right  = row['right_img']
+            orig_angle  = row['steer_angle'] 
             # extract image names
-            center, left, right = path.basename(center), path.basename(left), path.basename(right)
+            base_center = path.basename(orig_center)
+            base_left   = path.basename(orig_left) 
+            base_right  = path.basename(orig_right)
             # prepend image path
-            center, left, right = path.join(image_base, center), path.join(image_base, left), path.join(image_base, right)
+            center = path.join(image_base, base_center)
+            left   = path.join(image_base, base_left)
+            right  = path.join(image_base, base_right)
             # repackage the cleaned data into samples
             sample = {}
             sample['center_img'] = center
             sample['left_img'] = left
             sample['right_img'] = right
-            sample['steer_angle'] = angle
+            sample['steer_angle'] = orig_angle
             samples.append(sample)
+           
     return samples
+
+    
+def augment_data(data_folder):
+    '''
+    Augmentation the data by flipping it horizontally
+    '''
+    subfolders = glob.glob(path.join(data_folder, '*'))
+    subfolders = set(subfolders)
+ 
+    # Data augmentation
+    for subfolder in subfolders:
+        # original data folder (without _aug suffix) that has not been augmented 
+        if not subfolder.endswith('_aug') and (subfolder+'_aug' not in subfolders):
+            os.makedirs(path.join(subfolder+'_aug', 'IMG'))
+
+            image_base = path.join(subfolder, 'IMG')
+            label_path = path.join(subfolder, 'driving_log.csv')
+
+            samples_df = pd.read_csv(label_path, names=['center_img', 'left_img', 'right_img', 'steer_angle', 'throttle', 'break', 'speed'])
+            samples_df['steer_angle'] = -samples_df['steer_angle']
+            samples_df.to_csv(path.join(subfolder+'_aug', 'driving_log.csv'), header=False, index=False)
+
+            for _, row in samples_df.iterrows():
+                orig_center = row['center_img']
+                base_center = path.basename(orig_center)
+                center = path.join(image_base, base_center)
+                center = cv2.imread(center)
+                center_flipped = np.fliplr(center)
+                cv2.imwrite(path.join(subfolder+'_aug', 'IMG', base_center), center_flipped)
 
 
 def main():
@@ -165,8 +208,11 @@ def main():
     print('Batch size:        ', args.batchsize)
 
     # prepare data and train!
+    augment_data(data_folder)
     samples = extract_samples(data_folder)
     train_samples, valid_samples = train_test_split(samples, test_size=0.2)
+    print('Data for training/validation: {}/{}'.format(len(train_samples), len(valid_samples)))
+
     train(train_samples, valid_samples, nb_epoch=nb_epoch, batch_size=batchsize)
 
 
