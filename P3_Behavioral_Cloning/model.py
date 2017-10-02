@@ -37,8 +37,8 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
     model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation='relu'))
     model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation='relu'))
 
-    model.add(Convolution2D(64, 3, 3, activation='relu')
-    model.add(Convolution2D(64, 3, 3, activation='relu')
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
 
     # FC Layers
     model.add(Flatten())
