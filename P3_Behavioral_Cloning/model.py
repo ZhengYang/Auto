@@ -32,7 +32,6 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
     model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
     # Conv Layers
-
     model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation='relu'))
     model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation='relu'))
     model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation='relu'))
@@ -44,14 +43,8 @@ def train(train_samples, valid_samples, nb_epoch=3, batch_size=32, model_file_na
     model.add(Flatten())
 
     model.add(Dense(100))
-    model.add(Activation('relu'))
-
     model.add(Dense(50))
-    model.add(Activation('relu'))
-
     model.add(Dense(10))
-    model.add(Activation('relu'))
-
     model.add(Dense(1))
 
     model.compile(loss='mse', optimizer='adam')
