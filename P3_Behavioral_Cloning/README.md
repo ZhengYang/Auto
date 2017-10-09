@@ -53,13 +53,13 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 24 and 64 (model.py lines 32-40)
+My model consists of a convolution neural network with 5 convolutional layers and 3 fully connected layers. The first 3 conv layers use 3x3 filters, (2,2) strides and depths between 24 and 64 (model.py lines 35-40).
+
+The fully connected layers are having sizes 100, 50 and 10 respectively.
 
 The model includes RELU layers to introduce nonlinearity (code line 35-40), and the data is normalized in the model using a Keras lambda layer (code line 31).
 
 #### 2. Attempts to reduce overfitting in the model
-
-The model contains dropout layers in order to reduce overfitting (model.py lines 21).
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 195). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
@@ -79,21 +79,23 @@ For details about how I created the training data, see the next section.
 
 The overall strategy for deriving a model architecture was to explore different models.
 
-My first step was to use a convolution neural network model similar to the one I used for the traffic sign classification project. I used that model as a baseline. Then I discovered there is the Nvidia's self driving model. So I implemented it and the result look promising.
+My first step was to use a convolution neural network model similar to the one that I used for the traffic sign classification project. I used that model as a baseline. Then I discovered there is the Nvidia's self driving model. So I implemented it and the result look promising.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model to add dropoff in the fully connected layers, but it doesn't seem to work very well. So my strategy was to monitor the validation errors, when trainnig error decrease but validation error increases, it's a sign of overfitting. In general, I found that 3 epochs are enough to get good result.
+To combat the overfitting, I modified the model to add dropoff in the fully connected layers, but it doesn't seem to work very well. So my strategy was to monitor the validation errors, when trainnig error decrease but validation error increases, it's a sign of stopping the training. In general, I found that 3 epochs are enough to get reasonable result.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track: it drove off the road when not at the center region of the road, and it went off to the dirt at the sharp turn immdiately at pass the bridge. To improve the driving behavior in these cases, I collected more data to teach it how to recover from the side of the road as well as more turning data.
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track: it drove off the road when not at the center region of the road, and it also tend to go off to the dirt at the sharp turn immdiately after passing the bridge. To improve the driving behavior in these cases, I collected more data to teach it how to recover from the side of the road as well as more turning data.
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 27-50) consisted of a convolution neural network with the following layers and layer sizes: an input layer followed by normalization layer and cropping layer. After that, the model passes preprocessed data to the convolutional layers.
+The final model architecture (model.py lines 24-50) consisted of a convolution neural network with the following layers and layer sizes: an input layer followed by normalization layer and cropping layer. After that, the model passes preprocessed data to the convolutional layers.
 
-There are 5 convolutional layers. All of them uses *ReLU* as the activation function. Filter size of the first 3 is *(5, 5)* and last 2 is *(3, 3)*. The stride of the first 3 is *(2, 2)* and the rest is *(1,1)*. The depth of the 5 filters are 24, 36, 48, 64 and 64 respectively.
+There are 5 convolutional layers. All of them uses *ReLU* as the activation function. Filter size of the first 3 layers is *(5, 5)* and last 2 is *(3, 3)*. The stride of the first 3 is *(2, 2)* and the rest is *(1,1)*. The depth of the 5 filters are 24, 36, 48, 64 and 64 respectively.
+
+Fully connected layers are of size 100, 50 and 10. The final output layer is just a float representing the steering angle.
 
 Here is a visualization of the architecture.
 
@@ -112,7 +114,7 @@ To capture good driving behavior, I first recorded two laps on track one using c
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to getting back to the center when the directions are off. These images show what a recovery looks like starting from the vehicle at the right of the road and slowly bearing to the center of the road:
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to getting back to the center when the directions are off. These images show what a recovery looks like starting from the vehicle at the right side of the road and slowly bearing to the center of the road:
 
 ![alt text][image3]
 ![alt text][image4]
@@ -123,7 +125,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 ![alt text][image6]
 ![alt text][image7]
 
-After the collection process, I had 16,894 data points. I then preprocessed this data by normalizing the color values into [0,1]. The images are also croped such that the top 70 pixels (above the horizon) and the bottom 25 pixels (part of the car) are removed.
+After the collection process, I had 16,894 data points. I then preprocessed this data by normalizing the color values into range [0,1]. The images are also croped such that the top 70 pixels (above the road) and the bottom 25 pixels (part of the car) are removed.
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set.
 
