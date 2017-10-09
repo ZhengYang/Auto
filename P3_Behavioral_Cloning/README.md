@@ -117,7 +117,9 @@ To capture good driving behavior, I first recorded two laps on track one using c
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to getting back to the center when the directions are off. These images show what a recovery looks like starting from the vehicle at the right side of the road and slowly bearing to the center of the road:
 
 ![alt text][image3]
+
 ![alt text][image4]
+
 ![alt text][image5]
 
 To augment the data sat, I also flipped images and angles thinking that this would make the training data more balanced. For example, here is an image that has then been flipped:
