@@ -1,20 +1,14 @@
-#**Behavioral Cloning** 
+# **Behavioral Cloning**
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Behavioral Cloning Project**
+## Behavioral Cloning Project
 
 The goals / steps of this project are the following:
+
 * Use the simulator to collect data of good driving behavior
 * Build, a convolution neural network in Keras that predicts steering angles from images
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
-
 
 [//]: # (Image References)
 
@@ -27,21 +21,26 @@ The goals / steps of this project are the following:
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.
 
 ---
+
 ### Files Submitted & Code Quality
 
 #### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
-* model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode, the speed has been set to 20.
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results (this file)
+
+* `model.py` containing the script to create and train the model
+* `drive.py` for driving the car in autonomous mode (the speed has been modified to 20)
+* `model.h5` containing a trained convolution neural network
+* `README.md` summarizing the results (this file)
 
 #### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+
+Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
+
 ```sh
 python drive.py model.h5
 ```
@@ -54,9 +53,9 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 24 and 64 (model.py lines 32-40) 
+My model consists of a convolution neural network with 3x3 filter sizes and depths between 24 and 64 (model.py lines 32-40)
 
-The model includes RELU layers to introduce nonlinearity (code line 35-40), and the data is normalized in the model using a Keras lambda layer (code line 31). 
+The model includes RELU layers to introduce nonlinearity (code line 35-40), and the data is normalized in the model using a Keras lambda layer (code line 31).
 
 #### 2. Attempts to reduce overfitting in the model
 
@@ -74,7 +73,7 @@ Training data was chosen to keep the vehicle driving on the road. I used center 
 
 For details about how I created the training data, see the next section.
 
-### Model Architecture and Training Strategy
+### Architecture and Training Documentation
 
 #### 1. Solution Design Approach
 
